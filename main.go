@@ -4,8 +4,11 @@ import (
 	"github.com/codegangsta/martini"
 )
 
+var Gofi *GoForIt
+
 func main() {
-	//db := GetDb()
+	Gofi = NewGoForIt()
+	Gofi.Init("")
 
 	m := martini.Classic()
 	m.Get("/", func() string {
