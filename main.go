@@ -9,11 +9,11 @@ import (
 func main() {
 	configFile := flag.String("config", "goforit.json", "Config file")
 	flag.Parse()
-	Gofi := NewGoForIt()
-	Gofi.Init(*configFile)
+	app := NewApp()
+	app.Init(*configFile)
 
 	m := martini.Classic()
-	m.Map(Gofi)
+	m.Map(app)
 	m.Use(render.Renderer(render.Options{
 		Layout: "layout",
 	}))

@@ -4,25 +4,25 @@ import (
 	"fmt"
 )
 
-type GoForIt struct {
+type App struct {
 	Config *Config
 	Model  *Model
 }
 
-func NewGoForIt() *GoForIt {
-	return &GoForIt{
+func NewApp() *App {
+	return &App{
 		Config: NewConfig(),
 		Model:  NewModel(),
 	}
 }
 
-func (gfi *GoForIt) Init(configFile string) error {
-	err := gfi.Config.Load(configFile)
+func (app *App) Init(configFile string) error {
+	err := app.Config.Load(configFile)
 	if err != nil {
 		fmt.Printf("Cannot load config file! Error: %s\n", err.Error())
 		return err
 	}
-	err = gfi.Model.Init(gfi.Config)
+	err = app.Model.Init(app.Config)
 	if err != nil {
 		fmt.Printf("Cannot open database! Error: %s\n", err.Error())
 		return err
