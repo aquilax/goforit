@@ -1,14 +1,13 @@
 package main
 
 import (
-	"database/sql"
-
+	"github.com/jmoiron/sqlx"
 	//	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
 )
 
 type Model struct {
-	db *sql.DB
+	db *sqlx.DB
 }
 
 func NewModel() *Model {
@@ -17,7 +16,7 @@ func NewModel() *Model {
 
 func (m *Model) Init(config *Config) error {
 	var err error
-	m.db, err = sql.Open(config.database, config.dsn)
+	m.db, err = sqlx.Open(config.Database, config.Dsn)
 	return err
 }
 

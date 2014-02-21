@@ -6,8 +6,8 @@ import (
 )
 
 type Config struct {
-	database string
-	dsn      string
+	Database string
+	Dsn      string
 }
 
 func NewConfig() *Config {
@@ -15,9 +15,9 @@ func NewConfig() *Config {
 }
 
 func (c *Config) Load(fileName string) error {
-	file, error := os.Open(fileName)
-	if error != nil {
-		return error
+	file, err := os.Open(fileName)
+	if err != nil {
+		return err
 	}
 	decoder := json.NewDecoder(file)
 	return decoder.Decode(&c)
