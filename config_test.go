@@ -5,7 +5,7 @@ import (
 )
 
 func TestLoad(t *testing.T) {
-	fileName := "";
+	fileName := ""
 	config := NewConfig()
 	err := config.Load(fileName)
 	if err == nil {

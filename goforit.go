@@ -1,19 +1,18 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 )
 
 type GoForIt struct {
 	Config *Config
-	Db     *sql.DB
+	Model  *Model
 }
 
 func NewGoForIt() *GoForIt {
 	return &GoForIt{
 		Config: NewConfig(),
-		Db:     nil,
+		Model:  NewModel(),
 	}
 }
 
@@ -23,7 +22,7 @@ func (gfi *GoForIt) Init(configFile string) error {
 		fmt.Printf("Cannot load config file! Error: %s\n", err.Error())
 		return err
 	}
-	gfi.Db, err = InitDb(gfi.Config)
+	err = gfi.Model.Init(gfi.Config)
 	if err != nil {
 		fmt.Printf("Cannot open database! Error: %s\n", err.Error())
 		return err

@@ -3,19 +3,21 @@ package main
 import (
 	"flag"
 	"github.com/codegangsta/martini"
+	"github.com/martini-contrib/render"
 )
-
-var Gofi *GoForIt
 
 func main() {
 	configFile := flag.String("config", "goforit.json", "Config file")
 	flag.Parse()
-	Gofi = NewGoForIt()
+	Gofi := NewGoForIt()
 	Gofi.Init(*configFile)
 
 	m := martini.Classic()
-	m.Get("/", func() string {
-		return "Hello world!"
-	})
+	m.Map(Gofi)
+	m.Use(render.Renderer(render.Options{
+		Layout: "layout",
+	}))
+	m.Use(martini.Static("public_html"))
+	m.Get("/", GetHomeIndex)
 	m.Run()
 }
