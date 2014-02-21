@@ -6,11 +6,8 @@ import (
 )
 
 type Config struct {
-	dbuser     string
-	dbpassword string
-	dbname     string
-	dbhost     string
-	dbport     int
+	database string
+	dsn      string
 }
 
 func NewConfig() *Config {
