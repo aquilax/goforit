@@ -1,13 +1,23 @@
 package main
 
 import (
+	"fmt"
 	"github.com/martini-contrib/render"
 	"net/http"
 )
 
+type IndexPageData struct {
+	Boards      *[]Board
+	LatestPosts *[]Post
+	PageData
+}
+
 func GetHomeIndex(r render.Render, req *http.Request, app *App) {
-	app.Model.getDomain(req.Host)
-	app.Model.getBoards()
-	app.Model.getLatestPosts()
-	r.HTML(200, "index", "world")
+	indexData := &IndexPageData{}
+	indexData.Domain = app.Model.getDomain(req.Host)
+	indexData.Boards = app.Model.getBoards()
+	indexData.LatestPosts = app.Model.getLatestPosts()
+	indexData.Path = &[]PathLink{}
+	fmt.Printf("%#v", indexData)
+	r.HTML(200, "index", indexData)
 }

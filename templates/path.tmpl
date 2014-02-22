@@ -1,0 +1,11 @@
+{{ if .}}
+	<div id="path" itemprop="breadcrumb">
+	{{ range . }}
+		{{ if .Url }}
+			<a href="{{ .Url }}">{{ html .Label }}</a> &raquo;
+		{{ else }}
+			{{ html .Label }}
+		{{ end }}
+	{{ end }}
+	</div>
+{{ end }}
