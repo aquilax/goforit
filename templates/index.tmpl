@@ -1,1 +1,22 @@
-{{ . }}
+{{ range .GroupedBoards }}
+	{{ if .Name }}
+		<h2>{{ .Name }}</h2>
+	{{ end }}
+		<table class="tbl">
+		<tr>
+			<th>{{ lang "\"Boards\""}}</th>
+			<th style="width:50px;text-align:right">{{ lang "\"Topics\"" }}</th>
+			<th style="width:150px;text-align:right"></th>
+		</tr>
+		{{ range $i, $board := .Boards }}
+		{{ if mod $i 2 }}<tr>{{ else }}<tr class="e">{{ end }}
+			<td>
+				<a href="/forum/{{ $board.Id }}/0/{{ slug $board.Title}}" class="b title">{{ html $board.Title }} </a>
+				{{ if $board.Body }}<br /><em style="margin:.2em 0 0 2em">{{ $board.Body }}</em>{{ end }}
+			</td>
+			<td class="ar">{{ $board.Topics }}</td>
+			<td class="ar">{{ time $board.Updated}}</td>
+		</tr>
+		{{ end}}
+		</table>
+{{ end }}

@@ -7,15 +7,15 @@ import (
 )
 
 type IndexPageData struct {
-	Boards      *[]Board
-	LatestPosts *[]Post
+	GroupedBoards *GroupedBoards
+	LatestPosts   *[]Post
 	PageData
 }
 
 func GetHomeIndex(r render.Render, req *http.Request, app *App) {
 	indexData := &IndexPageData{}
 	indexData.Domain = app.Model.getDomain(req.Host)
-	indexData.Boards = app.Model.getBoards(indexData.Domain.DomainId)
+	indexData.GroupedBoards = app.Model.getGroupedBoards(indexData.Domain.DomainId)
 	indexData.LatestPosts = app.Model.getLatestPosts(indexData.Domain.DomainId, 0, 10)
 	indexData.Path = &[]PathLink{}
 	fmt.Printf("%#v", indexData)

@@ -2,10 +2,14 @@ package main
 
 import (
 	"fmt"
-	"time"
 	"github.com/jmoiron/sqlx"
+	"time"
 	//	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
+)
+
+const (
+	STATUS_ENABLED = 1
 )
 
 type Model struct {
@@ -24,11 +28,16 @@ type Domain struct {
 	HeaderText string `db:"header_text"`
 }
 
-type Board struct {
-	Id int
+type GroupedBoard struct {
+	Name   string
+	Boards *[]Board
 }
 
-type Post struct {
+type GroupedBoards []GroupedBoard
+
+type GBIndex map[string]int
+
+type Board struct {
 	Id        int
 	DomainId  int `db:"domain_id"`
 	Title     string
@@ -40,6 +49,10 @@ type Post struct {
 	Updated   time.Time
 	Topics    int
 	GroupName string `db:"group_name"`
+}
+
+type Post struct {
+	Id int
 }
 
 func NewModel() *Model {
@@ -64,19 +77,39 @@ func (m *Model) getDomain(host string) *Domain {
 	return domain
 }
 
-func (m *Model) getBoards(domainId int) *[]Board {
+func (m *Model) getGroupedBoards(domainId int) *GroupedBoards {
 	boards := &[]Board{}
-	err := m.db.Get(boards,
+	err := m.db.Select(boards,
 		"SELECT * FROM forum"+
-			" WHERE status = 1"+
-			" AND domain_id = $1"+
-			" ORDER BY  group_name, sorder", domainId)
+			" WHERE status = $1"+
+			" AND domain_id = $2"+
+			" ORDER BY  group_name, sorder", STATUS_ENABLED, domainId)
 	if err != nil {
 		fmt.Println(err.Error())
 		return nil
 	}
-	return boards
+	groupedBoards := &GroupedBoards{}
+	gbi := GBIndex{}
+	for _, board := range *boards {
+		groupedBoards.add(gbi, board)
+	}
+	return groupedBoards
 }
+
+func (gb *GroupedBoards) add(gbi GBIndex, b Board) {
+	i, ok := gbi[b.GroupName]
+	if !ok {
+		*gb = append(*gb, GroupedBoard{
+			Name:   b.GroupName,
+			Boards: &[]Board{},
+		})
+		i = len(*gb) - 1
+		gbi[b.GroupName] = i
+	}
+	boards := (*gb)[i].Boards
+	(*boards) = append((*boards), b)
+}
+
 func (m *Model) getLatestPosts(domainId int, limit int, offset int) *[]Post {
 	posts := &[]Post{}
 	return posts
