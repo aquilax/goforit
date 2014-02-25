@@ -28,12 +28,10 @@ func main() {
 					return n % mod
 				},
 				"slug": func(s string) string {
-					// TODO: generate slug
-					return s
+					return slug(s)
 				},
 				"time": func(t time.Time) string {
-					// TODO: format time
-					return "123"
+					return t.Format("01.02.2006 15.04")
 				},
 			},
 		},
