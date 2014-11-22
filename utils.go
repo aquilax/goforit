@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/aquilax/tripcode"
 	"github.com/aquilax/cyrslug"
+	"github.com/aquilax/tripcode"
 )
 
 func genTripcode(password string) string {

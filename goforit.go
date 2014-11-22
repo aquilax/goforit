@@ -11,11 +11,11 @@ import (
 type GoForIt struct {
 }
 
-func NewGoForIt () *GoForIt {
+func NewGoForIt() *GoForIt {
 	return &GoForIt{}
 }
 
-func (gfi *GoForIt) Run () {
+func (gfi *GoForIt) Run() {
 	configFile := flag.String("config", "goforit.json", "Config file")
 	flag.Parse()
 	app := NewApp()
